@@ -1,5 +1,5 @@
 -- --------------------------------------------------------------------------------------------------------------
--- TODO: Extract the appropriate data from the northwind database, and INSERT it into the Northwind_DW database.
+-- Extract the appropriate data from the northwind database, and INSERT it into the Northwind_DW database.
 -- --------------------------------------------------------------------------------------------------------------
 USE northwind_dw;
 
@@ -19,7 +19,7 @@ INSERT INTO `northwind_dw`.`dim_customers`
 `state_province`,
 `zip_postal_code`,
 `country_region`)
-SELECT `id`,
+SELECT `customers`.`id`,
 `company`,
 `last_name`,
 `first_name`,
@@ -37,8 +37,6 @@ FROM northwind.customers;
 -- Validate that the Data was Inserted ----------
 -- ----------------------------------------------
 SELECT * FROM northwind_dw.dim_customers;
-
-
 -- ----------------------------------------------
 -- Populate dim_employees
 -- ----------------------------------------------
@@ -80,7 +78,6 @@ FROM `northwind`.`employees`;
 -- ----------------------------------------------
 SELECT * FROM northwind_dw.dim_employees;
 
-
 -- ----------------------------------------------
 -- Populate dim_products
 -- ----------------------------------------------
@@ -113,8 +110,6 @@ FROM northwind.products;
 -- Validate that the Data was Inserted ----------
 -- ----------------------------------------------
 SELECT * FROM northwind_dw.dim_products;
-
-
 -- ----------------------------------------------
 -- Populate dim_shippers
 -- ----------------------------------------------
@@ -135,16 +130,10 @@ SELECT `shippers`.`id`,
     `shippers`.`country_region`
 FROM `northwind`.`shippers`;
 
-
-# TODO: Write a SELECT Statement to Populate the table;
-
 -- ----------------------------------------------
 -- Validate that the Data was Inserted ----------
 -- ----------------------------------------------
 SELECT * FROM northwind_dw.dim_shippers;
-
-
-
 -- ----------------------------------------------
 -- Populate fact_orders
 -- ----------------------------------------------
@@ -203,13 +192,9 @@ on o.id = od.order_id
 inner join northwind.order_details_status as ods 
 on od.status_id=ods.id;
 
-
-SELECT * FROM northwind_dw.fact_orders; 
-
-
 /* 
 --------------------------------------------------------------------------------------------------
-TODO: Write a SELECT Statement that:
+Write a SELECT Statement that:
 - JOINS the northwind.orders table with the northwind.orders_status table
 - JOINS the northwind.orders with the northwind.order_details table.
 --  (TIP: Remember that there is a one-to-many relationship between orders and order_details).
@@ -223,19 +208,14 @@ TODO: Write a SELECT Statement that:
 -- Validate that the Data was Inserted ----------
 -- ----------------------------------------------^*/
 SELECT * FROM northwind_dw.fact_orders; 
-#	Each Customer’s Last Name
-#	The total amount of the order quantity associated with each customer
-#	The total amount of the order unit price associated with each customer
-SELECT c.last_name, f.quantity, f.unit_price 
+
+#Exercise 3.0
+
+SELECT c.last_name, SUM(f.quantity) as total_quantity, SUM(f.unit_price) as total_unit_price
 FROM northwind_dw.fact_orders f
 inner join dim_customers c
-on c.customer_key = f.customer_key;
+on c.customer_key = f.customer_key
+GROUP BY c.last_name;
 
-SELECT last_name FROM northwind_dw.dim_customers;
-SELECT p.product_name
-, p.list_price AS product_list_price
-, p.category AS product_category
-, s.company AS supplier_company
-FROM northwind.suppliers s
-INNER JOIN northwind.products p
-ON s.id = p.supplier_ids;
+
+
