@@ -173,6 +173,7 @@ INSERT INTO `northwind_dw`.`fact_orders`
 `order_status`,
 `order_details_status`)
 SELECT o.id,
+o.employee_id,
 o.customer_id,
 od.product_id,
 o.shipper_id,
@@ -180,6 +181,7 @@ o.ship_name,
 o.ship_address,
 o.ship_city,
 o.ship_state_province,
+o.ship_zip_postal_code,
 o.ship_country_region,
 od.quantity,
 o.order_date,
@@ -200,6 +202,11 @@ right outer join northwind.order_details as od
 on o.id = od.order_id
 inner join northwind.order_details_status as ods 
 on od.status_id=ods.id;
+
+
+SELECT * FROM northwind_dw.fact_orders; 
+
+
 /* 
 --------------------------------------------------------------------------------------------------
 TODO: Write a SELECT Statement that:
@@ -211,37 +218,24 @@ TODO: Write a SELECT Statement that:
 - The column list I've included in the INSERT INTO clause above should be your guide to which 
 - columns you're required to extract from each of the four tables. Pay close attention!
 --------------------------------------------------------------------------------------------------
-*
-#os order status
-#ods
-#od order detail
-SELECT
-od.quantity,
-o.order_date,
-o.shipped_data,
-#mising?
-od.unit_price,
-od.discount,
-o.shipping_fee,
-o.taxes,
-o.payment_type,
-o.paid_date,
-o.tax_rate,
-os.status_name as order_status,
-ods.status_name as order_details_status
-from northwind.orders as o
-inner join northwind.orders_status as os
-on o.status_id = os.id
-right outer join northwind.order_details as od
-on o.id = od.order_id
-inner join northwind.order_details_status as ods 
-on od.status_id=ods.id;/
-
-#join order and status then join those 2 together against order details than join with orderdetails status to swap id with label
 
 -- ----------------------------------------------
 -- Validate that the Data was Inserted ----------
--- ----------------------------------------------
-#select *from norwind_dw;
-*/
+-- ----------------------------------------------^*/
 SELECT * FROM northwind_dw.fact_orders; 
+#	Each Customer’s Last Name
+#	The total amount of the order quantity associated with each customer
+#	The total amount of the order unit price associated with each customer
+SELECT c.last_name, f.quantity, f.unit_price 
+FROM northwind_dw.fact_orders f
+inner join dim_customers c
+on c.customer_key = f.customer_key;
+
+SELECT last_name FROM northwind_dw.dim_customers;
+SELECT p.product_name
+, p.list_price AS product_list_price
+, p.category AS product_category
+, s.company AS supplier_company
+FROM northwind.suppliers s
+INNER JOIN northwind.products p
+ON s.id = p.supplier_ids;
