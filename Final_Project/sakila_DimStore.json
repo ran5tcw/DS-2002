@@ -1,0 +1,24 @@
+[
+	{
+		"store_id" : 1,
+		"last_update" : "2006-02-15 04:57:12",
+		"address" : "47 MySakila Drive",
+		"district" : "Alberta",
+		"postal_code" : "",
+		"phone" : "",
+		"city" : "Lethbridge",
+		"country" : "Canada",
+		"store_key" : null
+	},
+	{
+		"store_id" : 2,
+		"last_update" : "2006-02-15 04:57:12",
+		"address" : "28 MySQL Boulevard",
+		"district" : "QLD",
+		"postal_code" : "",
+		"phone" : "",
+		"city" : "Woodridge",
+		"country" : "Australia",
+		"store_key" : null
+	}
+]
